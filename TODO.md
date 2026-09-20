@@ -2,10 +2,8 @@
 
 ## Status: REBUILD FROM MAIN COMPLETE (2026-09-17) — PATCHES COMMITTED
 
-**IMPORTANT**: Running llama-server on NOUGHT (`/home/whistler/llama.cpp/build/bin/llama-server`) is **production** — DO NOT KILL.
-**NEW BINARY** (untested, awaiting validation): `/home/whistler/llama_lazarus/build/bin/llama-server`
-
-**IMPORTANT**: Running llama-server on NOUGHT (`/home/whistler/llama.cpp/build/bin/llama-server`, PID ~200202) is **PI's process** — DO NOT KILL without explicit instruction.
+**IMPORTANT**: If running llama-server as production, DO NOT KILL the existing process without validation.
+**NEW BINARY** (untested, awaiting validation): `llama_lazarus/build/bin/llama-server`
 
 ---
 
@@ -32,23 +30,20 @@
 
 ## Build
 
-**Path**: `/home/whistler/llama_lazarus/build` (restore from `build_new` — see handoff instructions)
-
 ```bash
-cd /home/whistler/llama_lazarus && rm -rf build && mkdir build && cd build
+cd llama_lazarus && rm -rf build && mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release -DGGML_CUDA=ON -DGGML_CUDA_F16=ON \
-  -DCMAKE_CUDA_HOST_COMPILER=g++-11 -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.8/bin/nvcc \
+  -DCMAKE_CUDA_HOST_COMPILER=g++-11 -DCMAKE_CUDA_COMPILER=<CUDA_PATH>/bin/nvcc \
   -DGGML_CUDA_NCCL=ON -DCMAKE_CUDA_ARCHITECTURES="37" -DLLAMA_CURL=OFF \
   -DGGML_CUDA_FA_ALL_QUANTS=ON -DGGML_CUDA_FORCE_MMQ=ON -DGGML_CUDA_GRAPHS=OFF \
   -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DGGML_CUDA_CUBLAS=ON \
-  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-rpath,/usr/local/cuda-11.8/targets/x86_64-linux/lib"
+  -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-rpath,<CUDA_LIB_PATH>"
 make -j$(nproc) llama-server
 ```
 
 ## System
 
-- **NOUGHT**: 192.168.137.29, Debian/Q4OS, user whistler
-- **GPU**: 8× Tesla K80 (sm_37, 11GB each)
+- **Target Hardware**: 8× Tesla K80 (sm_37, 11GB each)
 - **CUDA**: Toolkit 11.8, Driver 470.256.02, Runtime 11.4
 - **Other patches**: gemm_algo selection, CUBLAS_DEFAULT_MATH, solve_tri math mode
 
@@ -65,7 +60,7 @@ make -j$(nproc) llama-server
 - Rebased patches onto latest llama.cpp main (`930e2fa59`, Sep 17 2026)
 - Fixed `.git/objects` permissions (some dirs owned by root)
 - Committed patches: `8a0943c21` on branch `sync-upstream-2026-09-17`
-- Rebuilt `llama-server` successfully — binary at `/home/whistler/llama_lazarus/build/bin/llama-server`
+- Rebuilt `llama-server` successfully
 - Build config: cc=37, cuBLAS F16, MMQ forced, FA all quants, NCCL on
 
 ---
