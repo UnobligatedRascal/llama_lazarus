@@ -10,7 +10,7 @@ OS: Debian Bookworm > Q4os
 
 llama.cpp="""https://github.com/ggml-org/llama.cpp"""
 
-llama.cpp build script (tuned for local_system)="""git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && cmake -B build -DCMAKE_BUILD_TYPE=Release -DGGML_CUDA=ON -DGGML_SCHED_MAX_COPIES=1 -DGGML_CUDA_F16=ON -DGGML_CUDA_PEER_MAX_BATCH_SIZE=64 -DCMAKE_CUDA_HOST_COMPILER=g++-11 -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.8/bin/nvcc -DGGML_CUDA_NCCL=ON -DCMAKE_CUDA_ARCHITECTURES=37 -DLLAMA_CURL=OFF -DGGML_CUDA_FA_ALL_QUANTS=ON -DGGML_CUDA_FORCE_MMQ=ON -DCUDA_COMPILER=/usr/local/cuda-11.8/bin/nvcc -DGGML_CUDA_ARCHITECTURES="37" -DGGML_CUDA_GRAPHS=OFF -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 && cmake --build build --config Release -j36"""
+llama.cpp build script (tuned for local_system)="""git clone https://github.com/ggml-org/llama.cpp && cd llama.cpp && cmake -B build -DCMAKE_BUILD_TYPE=Release -DGGML_CUDA=ON -DGGML_SCHED_MAX_COPIES=1 -DGGML_CUDA_NCCL=ON -DGGML_CUDA_FA_ALL_QUANTS=ON -DGGML_CUDA_FORCE_MMQ=ON -DGGML_CUDA_FA=ON -DGGML_CUDA_GRAPHS=OFF -DCMAKE_CUDA_ARCHITECTURES="37" -DCMAKE_CUDA_COMPILER=/usr/local/cuda-11.8/bin/nvcc -DGGML_CUDA_PEER_MAX_BATCH_SIZE=64 -DCMAKE_CUDA_HOST_COMPILER=g++-11 -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DGGML_AVX2=ON -DGGML_AVX512=OFF -DGGML_FMA=ON -DGGML_F16C=ON -DGGML_SSE42=ON -DGGML_BMI2=ON -DGGML_NATIVE=OFF -DGGML_OPENMP=ON -DLLAMA_CURL=OFF -DCMAKE_SHARED_LINKER_FLAGS="-Wl,-rpath,/usr/local/cuda-11.8/targets/x86_64-linux/lib" -DGGML_CUDA_CUBLAS=ON && cmake --build build --config Release -j$(nproc)"""
 
 All requirements of the software stack are met, build works, llama.cpp/llama-server works
 </working_software_stack>
